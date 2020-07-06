@@ -1,11 +1,17 @@
 package scripts;
 
 
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+import org.openqa.selenium.TakesScreenshot;
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.OutputType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
+
 import utility.ReadInputData;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
@@ -26,7 +32,7 @@ public class BaseClass {
 	public String password = rd.getPassword();
 	public String keyword = rd.getKeyword();
 	public String log4jpropath = rd.getLog4jPath();
-	protected AndroidDriver<AndroidElement> driver;
+	public static  AndroidDriver<AndroidElement> driver;
 
 	@BeforeTest 
 	public void basesetup() throws MalformedURLException {
@@ -43,6 +49,18 @@ public class BaseClass {
 			
 		} catch (NullPointerException ex) {
 			throw new RuntimeException("Appium driver could not be initialised for this device");
+		}
+	
+	}
+	
+	//To take the screenshot of failed test cases
+	@Test
+	public static void failed(String testMethodName){ 
+		File srcFile=((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+		try {
+			FileUtils.copyFile(srcFile, new File(System.getProperty("user.dir")+"\\"+testMethodName+".png"));
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 

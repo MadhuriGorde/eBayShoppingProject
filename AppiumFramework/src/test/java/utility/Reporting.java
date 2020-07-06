@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.testng.ITestContext;
+import org.testng.ITestListener;
 import org.testng.ITestResult;
 import org.testng.TestListenerAdapter;
 
@@ -16,6 +17,8 @@ import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
 import com.aventstack.extentreports.reporter.configuration.ChartLocation;
 import com.aventstack.extentreports.reporter.configuration.Theme;
 
+import scripts.BaseClass;
+
 public class Reporting extends TestListenerAdapter {
 	public ExtentHtmlReporter htmlReporter;
 	public ExtentReports extReporter;
@@ -23,8 +26,7 @@ public class Reporting extends TestListenerAdapter {
 
 	public void onStart(ITestContext tc) {
 		String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
-		String reportName = "Test-Report-" + timeStamp + ".html";
-		htmlReporter = new ExtentHtmlReporter(reportName);
+		htmlReporter = new ExtentHtmlReporter(System.getProperty("user.dir")+"\\Reports\\Extentreport.html");
 		extReporter = new ExtentReports();
 		extReporter.attachReporter(htmlReporter);
 	}
@@ -38,6 +40,8 @@ public class Reporting extends TestListenerAdapter {
 		
 		test = extReporter.createTest(tr.getName());
 		test.log(Status.FAIL, MarkupHelper.createLabel(tr.getName(), ExtentColor.RED));
+		String src=tr.getMethod().getMethodName();
+		BaseClass.failed(src);
 		
 	}
 

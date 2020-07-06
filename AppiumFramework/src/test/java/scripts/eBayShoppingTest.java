@@ -1,10 +1,16 @@
 package scripts;
 
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+
+import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.android.AndroidElement;
+
 import org.testng.AssertJUnit;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 
 import pages.CartPage;
 import pages.CheckoutPage;
@@ -16,15 +22,30 @@ import pages.SearchResultPage;
 
 public class eBayShoppingTest extends BaseClass { 
 	
-	private HomePage hp=new HomePage();;
-	private MenuPage mp=new MenuPage();
-	private LogInPage lp=new LogInPage();
-	private SearchResultPage sp=new SearchResultPage();
-	private ItemPage ip=new ItemPage();
-	private CartPage cp=new CartPage();
-	private CheckoutPage chp=new CheckoutPage();
+	private HomePage hp;
+	private MenuPage mp;
+	private LogInPage lp;
+	private SearchResultPage sp;
+	private ItemPage ip;
+	private CartPage cp;
+	private CheckoutPage chp;
 	public static Logger logs;
 	
+
+	@BeforeClass 
+	public void initObjects() {
+		hp = new HomePage(driver);
+		mp = new MenuPage(driver);
+		lp = new LogInPage(driver);
+		sp = new SearchResultPage(driver);
+		ip = new ItemPage(driver);
+		cp = new CartPage(driver);
+		chp = new CheckoutPage(driver);
+		
+		logs = Logger.getLogger(eBayShoppingTest.class);
+		PropertyConfigurator.configure(log4jpropath);
+		
+	}
 
 	@Test(priority = 1)
 	public void launchApp() {
@@ -35,7 +56,7 @@ public class eBayShoppingTest extends BaseClass {
 		} catch (Exception e) {
 			logs.fatal("Test Failed!! Remainig tests will be skipped.");
 			e.printStackTrace();
-			AssertJUnit.fail();
+			
 		}
 	}
 
@@ -47,7 +68,7 @@ public class eBayShoppingTest extends BaseClass {
 		} catch (Exception e) {
 			logs.fatal("Test Failed!! Remainig tests will be skipped.");
 			e.printStackTrace();
-			AssertJUnit.fail();
+			
 		}
 	}
 
@@ -65,7 +86,7 @@ public class eBayShoppingTest extends BaseClass {
 
 			logs.fatal("Test Failed!! Remainig tests will be skipped.");
 			e.printStackTrace();
-			AssertJUnit.fail();
+			
 		}
 	}
 
@@ -82,7 +103,6 @@ public class eBayShoppingTest extends BaseClass {
 		} catch (Exception e) {
 			logs.fatal("Test Failed!! Remainig tests will be skipped.");
 			e.printStackTrace();
-			AssertJUnit.fail();
 		}
 	}
 
@@ -104,7 +124,6 @@ public class eBayShoppingTest extends BaseClass {
 		} catch (Exception e) {
 			logs.fatal("Test Failed!! Remainig tests will be skipped.");
 			e.printStackTrace();
-			AssertJUnit.fail();
 		}
 	}
 
@@ -113,7 +132,7 @@ public class eBayShoppingTest extends BaseClass {
 		try {
 			driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 			driver.findElementByAndroidUIAutomator(
-					"new UiScrollable(new UiSelector()).scrollIntoView(textContains(\"Total\"));");
+					"new UiScrollable(new UiSelector()).scrollIntoView(textContains(\"Total\"));");//android code inside find element
 			chp.selectPaymentMethod();
 			logs.info("Code is not written to add valid credit card or PayPal account");
 			chp.confirmPaymenrAndBuy();
@@ -121,7 +140,6 @@ public class eBayShoppingTest extends BaseClass {
 		} catch (Exception e) {
 			logs.fatal("Test Failed!! Remainig tests will be skipped.");
 			e.printStackTrace();
-			AssertJUnit.fail();
 		}
 	}
 }

@@ -2,38 +2,52 @@ package pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.PageFactory;
 
 import io.appium.java_client.MobileElement;
+import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.android.AndroidElement;
+import io.appium.java_client.pagefactory.AndroidFindBy;
+import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import scripts.BaseClass;
 import scripts.eBayShoppingTest;
 
 public class LogInPage extends eBayShoppingTest{
 
 	
-	MobileElement unameTxtBox= (MobileElement)driver.findElementByXPath("//android.widget.EditText[@text='Email or username']");
+	public LogInPage(AndroidDriver<AndroidElement> driver) { 
+		PageFactory.initElements(new AppiumFieldDecorator(driver), this);
+	}
 
-	public void enterUsername(String uname) { 
+	@AndroidFindBy(xpath = "//android.widget.EditText[@text='Email or username']") // Element locator for user-name text box.
+	
+	AndroidElement unameTxtBox;
+
+	public void enterUsername(String uname) { // Method to enter user-name.
 		unameTxtBox.sendKeys(uname);
 	}
+
+	@AndroidFindBy(xpath = "//android.widget.EditText[@text='Password']") // Element locator for password text box.
 	
-	MobileElement pwordTxtBox= (MobileElement)driver.findElementByXPath("//android.widget.EditText[@text='Password']");
+	AndroidElement pwordTxtBox;
 
-
-	public void enterPassword(String pword) { 
+	public void enterPassword(String pword) { // Method to enter password
 		pwordTxtBox.sendKeys(pword);
 	}
 
-	MobileElement buttonSignin= (MobileElement)driver.findElementById("com.ebay.mobile:id/button_sign_in");
+	@AndroidFindBy(id = "com.ebay.mobile:id/button_sign_in") // Element locator for sign-in button.
+	
+	AndroidElement buttonSignin;
 
-
-	public void clickSigninButton() { 
+	public void clickSigninButton() { // Method to click sign-in button.
 		buttonSignin.click();
 	}
+
+	@AndroidFindBy(id = "com.ebay.mobile:id/button_google_deny") // Element locator to skip a recommendation.
 	
-	MobileElement denyButton= (MobileElement)driver.findElementById("com.ebay.mobile:id/button_google_deny");
+	AndroidElement denyButton;
 
-
-	public void clickDenyButton() { 
+	public void clickDenyButton() { // Method to click deny button.
 		denyButton.click();
 	}
 	
